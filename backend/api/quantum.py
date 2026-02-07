@@ -1,5 +1,11 @@
 """
 Quantum simulation API: arbitrage, scheduler, liquidation.
+
+Endpoints (see README "Functions and Algorithms" for algorithms and I/O):
+- POST /arbitrage  — optimal swap path (Arbitrage Pathfinder)
+- POST /scheduler  — transaction schedule (Transaction Scheduler)
+- POST /liquidation — liquidation strategy (Liquidation Optimizer)
+
 All computations use classical simulators (simulated annealing / QUBO) for PoC.
 """
 

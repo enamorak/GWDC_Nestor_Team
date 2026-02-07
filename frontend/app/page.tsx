@@ -34,7 +34,7 @@ export default function HomePage() {
   };
 
   return (
-    <div className="min-h-screen bg-pharos-dark text-slate-200">
+    <div className="bg-pharos-dark text-slate-200">
       {/* Hero */}
       <header className="relative overflow-hidden border-b border-white/5">
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_80%_50%_at_50%_-20%,rgba(99,102,241,0.15),transparent)]" />

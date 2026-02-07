@@ -1,9 +1,8 @@
 "use client";
 
 import { useState, useCallback, useEffect } from "react";
-import Link from "next/link";
 import { motion } from "framer-motion";
-import { ArrowLeft, Play, Loader2 } from "lucide-react";
+import { Play, Loader2 } from "lucide-react";
 import { fetchPharosPools, runArbitrage, type ArbitrageResponse } from "@/lib/api";
 import { QuantumGraph, type Pool } from "@/components/QuantumGraph";
 
@@ -82,15 +81,8 @@ export default function ArbitrageDemoPage() {
   }
 
   return (
-    <div className="min-h-screen bg-pharos-dark text-slate-200">
+    <div className="bg-pharos-dark text-slate-200">
       <div className="container mx-auto px-4 py-8">
-        <Link
-          href="/"
-          className="mb-8 inline-flex items-center gap-2 text-slate-400 hover:text-white"
-        >
-          <ArrowLeft className="h-4 w-4" /> Back
-        </Link>
-
         <h1 className="mb-2 text-3xl font-bold text-white">
           Demo 1: Quantum Arbitrage Pathfinder
         </h1>

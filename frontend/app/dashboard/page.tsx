@@ -1,8 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import Link from "next/link";
-import { ArrowLeft, Wifi, WifiOff, Server, Cpu, Fuel } from "lucide-react";
+import { Wifi, WifiOff, Server, Cpu, Fuel } from "lucide-react";
 import {
   fetchHealth,
   fetchPharosNetwork,
@@ -51,15 +50,8 @@ export default function DashboardPage() {
   }, []);
 
   return (
-    <div className="min-h-screen bg-pharos-dark text-slate-200">
+    <div className="bg-pharos-dark text-slate-200">
       <div className="container mx-auto px-4 py-8">
-        <Link
-          href="/"
-          className="mb-8 inline-flex items-center gap-2 text-slate-400 hover:text-white"
-        >
-          <ArrowLeft className="h-4 w-4" /> Back
-        </Link>
-
         <h1 className="mb-2 text-3xl font-bold text-white">Live Dashboard</h1>
         <p className="mb-8 text-slate-400">
           Pharos network stats, API health, quantum simulator status, and metrics.

@@ -1,0 +1,15 @@
+# Render.com Blueprint for QHDA Backend (free tier)
+# Deploy: connect repo and use this file, or create Web Service manually
+
+services:
+  - type: web
+    name: qhda-api
+    runtime: python
+    plan: free
+    buildCommand: pip install -r requirements.txt
+    startCommand: uvicorn main:app --host 0.0.0.0 --port $PORT
+    envVars:
+      - key: PHAROS_RPC_URL
+        value: https://atlantic.ocean.pharos.network
+      - key: PYTHON_VERSION
+        value: 3.11.0

@@ -1,5 +1,12 @@
 """
 Quantum simulation service using classical simulators (QUBO + simulated annealing).
+
+Three modules (see README "Functions and Algorithms" for full description):
+
+1. Arbitrage Pathfinder: best swap path across pools (graph + AMM formula + optional neal).
+2. Transaction Scheduler: assign orders to slots to avoid conflicts (conflict matrix + greedy graph coloring).
+3. Liquidation Optimizer: select positions to liquidate (sort by health factor, take top K).
+
 Proof-of-concept: same interface as future real quantum backend.
 """
 
