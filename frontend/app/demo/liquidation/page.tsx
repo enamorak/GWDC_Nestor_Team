@@ -176,39 +176,74 @@ export default function LiquidationDemoPage() {
         </div>
 
         {result && (
-          <motion.div
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="rounded-xl border border-slate-700 bg-slate-800/50 p-6"
-          >
-            <h2 className="mb-4 text-lg font-semibold text-white">
-              Optimal liquidation strategy
-            </h2>
-            <div className="mb-4 flex flex-wrap gap-6 text-sm">
-              <span className="text-slate-400">
-                Selected:{" "}
-                <strong className="text-white">
-                  {result.selected_positions.join(", ")}
-                </strong>
-              </span>
-              <span className="text-slate-400">
-                Est. recovery:{" "}
-                <strong className="text-green-400">
-                  {(result.estimated_recovery * 100).toFixed(2)}%
-                </strong>
-              </span>
-              <span className="text-slate-400">
-                Time: <strong className="text-white">{result.simulation_time} ms</strong>
-              </span>
-            </div>
-            <ul className="space-y-2">
-              {result.strategy.map((s) => (
-                <li key={s.position} className="font-mono text-sm text-slate-300">
-                  {s.action} {s.position} (priority {s.priority})
-                </li>
-              ))}
-            </ul>
-          </motion.div>
+          <>
+            {result.comparison && (
+              <motion.div
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                className="mb-8 rounded-xl border border-indigo-500/30 bg-indigo-500/5 p-6"
+              >
+                <h2 className="mb-4 text-lg font-semibold text-white">
+                  Classical vs Quantum — сравнение
+                </h2>
+                <div className="grid gap-6 sm:grid-cols-2">
+                  <div className="rounded-lg border border-slate-600 bg-slate-800/50 p-4">
+                    <p className="mb-2 text-sm font-medium text-slate-400">Classical (первые K по порядку списка)</p>
+                    <p className="text-slate-400">Recovery: <span className="text-white">{(result.comparison.classical_recovery * 100).toFixed(2)}%</span></p>
+                    <p className="mt-1 font-mono text-xs text-slate-500">{result.comparison.classical_selected.join(", ")}</p>
+                  </div>
+                  <div className="rounded-lg border border-cyan-500/50 bg-cyan-500/10 p-4">
+                    <p className="mb-2 text-sm font-medium text-cyan-400">Quantum (сортировка по health factor, худшие первыми)</p>
+                    <p className="text-slate-400">Recovery: <span className="text-green-400 font-semibold">{(result.comparison.quantum_recovery * 100).toFixed(2)}%</span></p>
+                    <p className="mt-1 font-mono text-xs text-slate-500">{result.comparison.quantum_selected.join(", ")}</p>
+                  </div>
+                </div>
+                <div className="mt-4 flex flex-wrap items-center gap-4">
+                  <span className="rounded-full bg-green-500/20 px-4 py-2 text-sm font-medium text-green-400">
+                    {result.comparison.winner === "quantum" ? "Quantum лучше" : "Classical лучше"}
+                  </span>
+                  {result.comparison.improvement_pct !== 0 && (
+                    <span className="text-slate-400">
+                      Улучшение recovery: <strong className="text-white">{result.comparison.improvement_pct > 0 ? "+" : ""}{result.comparison.improvement_pct}%</strong>
+                    </span>
+                  )}
+                </div>
+              </motion.div>
+            )}
+            <motion.div
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="rounded-xl border border-slate-700 bg-slate-800/50 p-6"
+            >
+              <h2 className="mb-4 text-lg font-semibold text-white">
+                Optimal liquidation strategy
+              </h2>
+              <div className="mb-4 flex flex-wrap gap-6 text-sm">
+                <span className="text-slate-400">
+                  Selected:{" "}
+                  <strong className="text-white">
+                    {result.selected_positions.join(", ")}
+                  </strong>
+                </span>
+                <span className="text-slate-400">
+                  Est. recovery:{" "}
+                  <strong className="text-green-400">
+                    {(result.estimated_recovery * 100).toFixed(2)}%
+                  </strong>
+                </span>
+                <span className="text-slate-400">
+                  Time: <strong className="text-white">{result.simulation_time} ms</strong>
+                </span>
+              </div>
+              <ul className="space-y-2">
+                {result.strategy.map((s) => (
+                  <li key={s.position} className="font-mono text-sm text-slate-300">
+                    {s.action} {s.position} (priority {s.priority})
+                  </li>
+                ))}
+              </ul>
+            </motion.div>
+          </>
         )}
       </div>
     </div>

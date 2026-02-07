@@ -34,12 +34,24 @@ export type ArbitrageRequest = {
   amount_in?: number;
 };
 
+export type ArbitrageComparison = {
+  classical_path: string[];
+  classical_profit: number;
+  classical_time_ms: number;
+  quantum_path: string[];
+  quantum_profit: number;
+  quantum_time_ms: number;
+  improvement_pct: number;
+  winner: string;
+};
+
 export type ArbitrageResponse = {
   optimal_path: string[];
   expected_profit: number;
   transactions: { pool: string; action: string; amount: number }[];
   simulation_time: number;
   classical_baseline?: number;
+  comparison?: ArbitrageComparison;
 };
 
 export async function runArbitrage(body: ArbitrageRequest): Promise<ArbitrageResponse> {
@@ -66,12 +78,22 @@ export type SchedulerRequest = {
   conflict_matrix?: number[][];
 };
 
+export type SchedulerComparison = {
+  classical_slots: number;
+  classical_conflicts_remaining: number;
+  quantum_slots: number;
+  quantum_conflicts_remaining: number;
+  slots_reduction_pct: number;
+  winner: string;
+};
+
 export type SchedulerResponse = {
   schedule: Record<string, string[]>;
   total_slots: number;
   conflict_reduction: string;
   conflict_matrix?: number[][];
   total_conflicts?: number;
+  comparison?: SchedulerComparison;
 };
 
 export async function fetchQuantumStatus(): Promise<{
@@ -109,11 +131,21 @@ export type LiquidationRequest = {
   protocol_constraints?: Record<string, unknown>;
 };
 
+export type LiquidationComparison = {
+  classical_recovery: number;
+  classical_selected: string[];
+  quantum_recovery: number;
+  quantum_selected: string[];
+  improvement_pct: number;
+  winner: string;
+};
+
 export type LiquidationResponse = {
   selected_positions: string[];
   strategy: { position: string; action: string; priority: number }[];
   estimated_recovery: number;
   simulation_time: number;
+  comparison?: LiquidationComparison;
 };
 
 export async function runLiquidation(

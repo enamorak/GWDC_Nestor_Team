@@ -105,6 +105,38 @@ export default function SchedulerDemoPage() {
           </div>
         )}
 
+        {result?.comparison && (
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="mb-8 rounded-xl border border-indigo-500/30 bg-indigo-500/5 p-6"
+          >
+            <h2 className="mb-4 text-lg font-semibold text-white">
+              Classical vs Quantum — сравнение
+            </h2>
+            <div className="grid gap-6 sm:grid-cols-2">
+              <div className="rounded-lg border border-slate-600 bg-slate-800/50 p-4">
+                <p className="mb-2 text-sm font-medium text-slate-400">Classical (sequential: 1 order = 1 slot)</p>
+                <p className="text-slate-300">Slots: <span className="text-white font-mono">{result.comparison.classical_slots}</span></p>
+                <p className="text-slate-400">Конфликты: {result.comparison.classical_conflicts_remaining}</p>
+              </div>
+              <div className="rounded-lg border border-cyan-500/50 bg-cyan-500/10 p-4">
+                <p className="mb-2 text-sm font-medium text-cyan-400">Quantum (graph coloring, батчи без конфликтов)</p>
+                <p className="text-slate-300">Slots: <span className="text-green-400 font-mono font-semibold">{result.comparison.quantum_slots}</span></p>
+                <p className="text-slate-400">Конфликты: {result.comparison.quantum_conflicts_remaining}</p>
+              </div>
+            </div>
+            <div className="mt-4 flex flex-wrap items-center gap-4">
+              <span className="rounded-full bg-green-500/20 px-4 py-2 text-sm font-medium text-green-400">
+                {result.comparison.winner === "quantum" ? "Quantum лучше" : "Classical лучше"}
+              </span>
+              <span className="text-slate-400">
+                Сокращение слотов: <strong className="text-white">{result.comparison.slots_reduction_pct}%</strong>
+              </span>
+            </div>
+          </motion.div>
+        )}
+
         {result && result.conflict_matrix && (
           <motion.div
             initial={{ opacity: 0, y: 10 }}

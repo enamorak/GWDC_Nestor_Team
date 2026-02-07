@@ -174,39 +174,72 @@ export default function ArbitrageDemoPage() {
         )}
 
         {result && (
-          <motion.div
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="rounded-xl border border-slate-700 bg-slate-800/50 p-6"
-          >
-            <h2 className="mb-4 text-lg font-semibold text-white">
-              Result — Quantum vs classical
-            </h2>
-            <div className="grid gap-4 sm:grid-cols-2">
-              <div>
-                <p className="text-sm text-slate-400">Optimal path</p>
-                <p className="font-mono text-cyan-400">
-                  {result.optimal_path.map(tokenLabel).join(" → ")}
-                </p>
-              </div>
-              <div>
-                <p className="text-sm text-slate-400">Expected profit (quantum sim)</p>
-                <p className="text-lg font-semibold text-green-400">
-                  {result.expected_profit.toFixed(2)}
-                </p>
-              </div>
-              <div>
-                <p className="text-sm text-slate-400">Simulation time</p>
-                <p className="font-mono">{result.simulation_time} ms</p>
-              </div>
-              {result.classical_baseline != null && (
-                <div>
-                  <p className="text-sm text-slate-400">Classical baseline (demo)</p>
-                  <p className="font-mono">{result.classical_baseline.toFixed(2)}</p>
+          <>
+            {result.comparison && (
+              <motion.div
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                className="mb-8 rounded-xl border border-indigo-500/30 bg-indigo-500/5 p-6"
+              >
+                <h2 className="mb-4 text-lg font-semibold text-white">
+                  Classical vs Quantum — сравнение
+                </h2>
+                <div className="grid gap-6 sm:grid-cols-2">
+                  <div className="rounded-lg border border-slate-600 bg-slate-800/50 p-4">
+                    <p className="mb-2 text-sm font-medium text-slate-400">Classical (greedy / direct path)</p>
+                    <p className="font-mono text-sm text-slate-300">
+                      Path: {result.comparison.classical_path.map(tokenLabel).join(" → ")}
+                    </p>
+                    <p className="mt-2 text-slate-400">Output amount: <span className="text-white">{result.comparison.classical_profit.toFixed(2)}</span></p>
+                    <p className="text-slate-400">Time: <span className="text-white">{result.comparison.classical_time_ms.toFixed(2)} ms</span></p>
+                  </div>
+                  <div className="rounded-lg border border-cyan-500/50 bg-cyan-500/10 p-4">
+                    <p className="mb-2 text-sm font-medium text-cyan-400">Quantum (full path search + QUBO)</p>
+                    <p className="font-mono text-sm text-slate-300">
+                      Path: {result.comparison.quantum_path.map(tokenLabel).join(" → ")}
+                    </p>
+                    <p className="mt-2 text-slate-400">Output amount: <span className="text-green-400 font-semibold">{result.comparison.quantum_profit.toFixed(2)}</span></p>
+                    <p className="text-slate-400">Time: <span className="text-white">{result.comparison.quantum_time_ms.toFixed(2)} ms</span></p>
+                  </div>
                 </div>
-              )}
-            </div>
-          </motion.div>
+                <div className="mt-4 flex flex-wrap items-center gap-4">
+                  <span className="rounded-full bg-green-500/20 px-4 py-2 text-sm font-medium text-green-400">
+                    {result.comparison.winner === "quantum" ? "Quantum лучше" : "Classical лучше"}
+                  </span>
+                  {result.comparison.improvement_pct !== 0 && (
+                    <span className="text-slate-400">
+                      Улучшение выхода: <strong className="text-white">{result.comparison.improvement_pct > 0 ? "+" : ""}{result.comparison.improvement_pct}%</strong>
+                    </span>
+                  )}
+                </div>
+              </motion.div>
+            )}
+            <motion.div
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="rounded-xl border border-slate-700 bg-slate-800/50 p-6"
+            >
+              <h2 className="mb-4 text-lg font-semibold text-white">Результат (оптимальный путь)</h2>
+              <div className="grid gap-4 sm:grid-cols-2">
+                <div>
+                  <p className="text-sm text-slate-400">Optimal path</p>
+                  <p className="font-mono text-cyan-400">
+                    {result.optimal_path.map(tokenLabel).join(" → ")}
+                  </p>
+                </div>
+                <div>
+                  <p className="text-sm text-slate-400">Expected profit</p>
+                  <p className="text-lg font-semibold text-green-400">
+                    {result.expected_profit.toFixed(2)}
+                  </p>
+                </div>
+                <div>
+                  <p className="text-sm text-slate-400">Simulation time</p>
+                  <p className="font-mono">{result.simulation_time} ms</p>
+                </div>
+              </div>
+            </motion.div>
+          </>
         )}
       </div>
     </div>

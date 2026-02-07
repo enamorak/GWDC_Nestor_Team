@@ -27,12 +27,24 @@ class TransactionRef(BaseModel):
     amount: float
 
 
+class ArbitrageComparison(BaseModel):
+    classical_path: list[str]
+    classical_profit: float
+    classical_time_ms: float
+    quantum_path: list[str]
+    quantum_profit: float
+    quantum_time_ms: float
+    improvement_pct: float  # (quantum - classical) / classical * 100 when classical > 0
+    winner: str  # "quantum" or "classical"
+
+
 class ArbitrageResponse(BaseModel):
     optimal_path: list[str]
     expected_profit: float
     transactions: list[TransactionRef]
     simulation_time: float  # ms
     classical_baseline: Optional[float] = None
+    comparison: Optional[ArbitrageComparison] = None
 
 
 # --- Scheduler ---
@@ -52,12 +64,22 @@ class SchedulerRequest(BaseModel):
     conflict_matrix: Optional[list[list[int]]] = None  # computed if not provided
 
 
+class SchedulerComparison(BaseModel):
+    classical_slots: int  # e.g. sequential = N orders = N slots
+    classical_conflicts_remaining: int
+    quantum_slots: int
+    quantum_conflicts_remaining: int  # 0
+    slots_reduction_pct: float  # (classical - quantum) / classical * 100
+    winner: str
+
+
 class SchedulerResponse(BaseModel):
     schedule: dict[str, list[str]]  # slot_id -> order_ids
     total_slots: int
     conflict_reduction: str
     conflict_matrix: Optional[list[list[int]]] = None  # for heatmap
     total_conflicts: int = 0
+    comparison: Optional[SchedulerComparison] = None
 
 
 # --- Liquidation ---
@@ -77,8 +99,18 @@ class LiquidationRequest(BaseModel):
     protocol_constraints: Optional[dict] = None
 
 
+class LiquidationComparison(BaseModel):
+    classical_recovery: float
+    classical_selected: list[str]
+    quantum_recovery: float
+    quantum_selected: list[str]
+    improvement_pct: float
+    winner: str
+
+
 class LiquidationResponse(BaseModel):
     selected_positions: list[str]
     strategy: list[dict]  # e.g. [{"position": "pos_1", "action": "liquidate", "priority": 1}]
     estimated_recovery: float
     simulation_time: float
+    comparison: Optional[LiquidationComparison] = None

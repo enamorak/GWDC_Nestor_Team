@@ -306,9 +306,9 @@ Request/response schemas are in **OpenAPI**: http://localhost:8000/docs .
 
 - **Navigation:** Sticky top navbar on all pages: **Home**, **Demos** (dropdown: Arbitrage, Scheduler, Liquidation), **Dashboard**. Mobile: hamburger menu with the same links. Active page highlighted.
 - **Landing (Home):** Hero, architecture, demo cards, tech stack, “Add Pharos to MetaMask”, dashboard link, roadmap, disclaimer.
-- **Demo Arbitrage:** Pool graph (D3.js), token/amount inputs, run simulation, optimal path and profit, path highlighted on graph.
-- **Demo Scheduler:** Random orders (5–100), conflict heatmap, schedule (slots + order IDs), conflict reduction.
-- **Demo Liquidation:** Positions list, “Simulate market drop” (reduce health), “Reset”, run optimizer, selected positions and strategy.
+- **Demo Arbitrage:** Pool graph (D3.js), token/amount inputs, run simulation. **Classical vs Quantum:** classical = direct or 2-hop only; quantum = full path search; shows improvement % and winner.
+- **Demo Scheduler:** Random orders (5–100), conflict heatmap, schedule. **Comparison:** classical = sequential (N slots); quantum = graph coloring (fewer slots); shows slots reduction % and winner.
+- **Demo Liquidation:** Positions list, “Simulate market drop” (reduce health), “Reset”, run optimizer, selected positions and strategy. **Comparison:** classical = first K by list order; quantum = sort by health factor; shows recovery improvement % and winner.
 - **Dashboard:** API health, Pharos (block, chain ID, gas), quantum simulator status, cached pools count.
 
 ### DevOps and config
