@@ -1,0 +1,15 @@
+{
+  "name": "qhda-monorepo",
+  "private": true,
+  "description": "Root for Vercel: real app is in frontend/",
+  "scripts": {
+    "build": "cd frontend && npm ci && npm run build",
+    "install": "cd frontend && npm install"
+  },
+  "devDependencies": {
+    "next": "14.2.0"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}
