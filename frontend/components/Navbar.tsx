@@ -5,7 +5,16 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Menu, X, Zap, GitBranch, BarChart3, LayoutDashboard, Home, ChevronDown } from "lucide-react";
 
-const navItems = [
+type IconComponent = React.ComponentType<{ className?: string }>;
+type NavItemLink = { href: string; label: string; icon: IconComponent };
+type NavItemDropdown = { label: string; icon: IconComponent; children: NavItemLink[] };
+type NavItem = NavItemLink | NavItemDropdown;
+
+function isNavLink(item: NavItem): item is NavItemLink {
+  return "href" in item && typeof (item as NavItemLink).href === "string";
+}
+
+const navItems: NavItem[] = [
   { href: "/", label: "Home", icon: Home },
   {
     label: "Demos",
@@ -65,16 +74,21 @@ export function Navbar() {
 
         {/* Desktop nav */}
         <nav className="hidden items-center gap-1 md:flex">
-          {navItems.map((item) =>
-            "href" in item ? (
-              <NavLink
-                key={item.href}
-                href={item.href}
-                label={item.label}
-                icon={item.icon}
-                active={pathname === item.href}
-              />
-            ) : (
+          {navItems.map((item) => {
+            if (isNavLink(item)) {
+              const link = item as NavItemLink;
+              const href: string = link.href ?? "/";
+              return (
+                <NavLink
+                  key={href}
+                  href={href}
+                  label={link.label}
+                  icon={link.icon}
+                  active={pathname === href}
+                />
+              );
+            }
+            return (
               <div key={item.label} className="relative group">
                 <button
                   onClick={() => setDemosOpen(!demosOpen)}
@@ -115,8 +129,8 @@ export function Navbar() {
                   </>
                 )}
               </div>
-            )
-          )}
+            );
+          })}
         </nav>
 
         {/* Mobile menu button */}
