@@ -251,9 +251,9 @@ export default function HomePage() {
           <h2 className="mb-10 text-center text-2xl font-semibold text-white">Roadmap</h2>
           <div className="mx-auto max-w-2xl space-y-6">
             {[
-              { phase: "2024", title: "Classical simulation on GPU", done: true },
-              { phase: "2025", title: "Integration with real quantum APIs (Qiskit / D-Wave)", done: false },
-              { phase: "2026", title: "Pilot with real transactions on Pharos", done: false },
+              { phase: "hack", title: "Classical simulation on GPU", done: true },
+              { phase: "2026", title: "Integration with real quantum APIs (Qiskit / D-Wave)", done: false },
+              { phase: "2027", title: "Pilot with real transactions on Pharos", done: false },
             ].map((item, i) => (
               <motion.div
                 key={item.phase}
