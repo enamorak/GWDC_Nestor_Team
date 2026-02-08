@@ -93,7 +93,7 @@ Alternatively, use the `backend/render.yaml` blueprint: in Render dashboard, **N
 
 1. Go to [Vercel](https://vercel.com) → Sign up / Log in (e.g. with GitHub).
 2. **Add New** → **Project** → Import your GitHub repo.
-3. **Root Directory:** set to `frontend` (or leave empty if the frontend is the repo root; if the repo contains both `frontend` and `backend`, set **Root Directory** to `frontend`).
+3. **Root Directory:** set to **`frontend`** (mandatory). Do not leave empty — the repo root has a monorepo layout; building from root can cause OOM. Use default **Install Command** (`npm install`) and **Build Command** (`npm run build`); do not override with `cd ../ && ...`.
 4. **Framework Preset:** Next.js (auto-detected).
 5. **Environment Variables:** add:
    - `NEXT_PUBLIC_API_URL` = your Render backend URL (e.g. `https://qhda-api.onrender.com`)  

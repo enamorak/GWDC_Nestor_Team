@@ -5,13 +5,8 @@
   "workspaces": ["frontend"],
   "scripts": {
     "build": "cd frontend && npm ci && npm run build",
-    "dev": "cd frontend && npm run dev",
-    "install": "cd frontend && npm install"
+    "dev": "cd frontend && npm run dev"
   },
-  "devDependencies": {
-    "next": "14.2.0"
-  },
-  "engines": {
-    "node": ">=18"
-  }
+  "devDependencies": { "next": "14.2.0" },
+  "engines": { "node": ">=18" }
 }
