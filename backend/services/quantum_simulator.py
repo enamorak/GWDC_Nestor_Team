@@ -25,7 +25,7 @@ from models.quantum import (
     LiquidationResponse,
     LiquidationComparison,
 )
-from services.pharos_fetcher import get_extended_demo_pools
+from services.demo_pools import get_extended_demo_pools
 
 
 def _arbitrage_qubo_classical(pools: list, token_in: str, token_out: str, amount_in: float) -> tuple[list[str], float, float]:

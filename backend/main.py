@@ -22,10 +22,13 @@ async def _pool_refresh_loop():
         try:
             await asyncio.sleep(settings.POOL_CACHE_TTL_SECONDS)
             await fetcher.get_pools()
+            print(f"Pool cache refreshed at {datetime.utcnow().isoformat()}")
         except asyncio.CancelledError:
+            print("Pool refresh task cancelled")
             break
-        except Exception:
-            pass
+        except Exception as e:
+            print(f"Error refreshing pool cache: {e}")
+            await asyncio.sleep(5)  # Wait before retry
 
 
 @asynccontextmanager
