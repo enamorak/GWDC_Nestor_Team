@@ -8,6 +8,9 @@ const TOKEN_LABELS: Record<string, string> = {
   "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48": "USDC",
   "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2": "WETH",
   "0xdAC17F958D2ee523a2206206994597C13D831ec7": "USDT",
+  "0x2260FAC5E5542a773Aa44fBCfeDf7C193bc2C599": "WBTC",
+  "0x6B175474E89094C44Da98b954EedeCB5BE3830": "DAI",
+  "0x514910771AF9Ca656af840dff83E8264EcF986CA": "LINK",
 };
 function tokenLabel(addr: string) {
   return TOKEN_LABELS[addr] || addr.slice(0, 6) + "…";
@@ -19,6 +22,7 @@ interface QuantumGraphProps {
   width?: number;
   height?: number;
   className?: string;
+  animate?: boolean;
 }
 
 export function QuantumGraph({
@@ -27,6 +31,7 @@ export function QuantumGraph({
   width = 600,
   height = 400,
   className = "",
+  animate = true,
 }: QuantumGraphProps) {
   const svgRef = useRef<SVGSVGElement>(null);
 
@@ -49,6 +54,18 @@ export function QuantumGraph({
       }
     });
 
+    const isOnPath = (d: { source: string; target: string }) => {
+      if (!optimalPath || optimalPath.length < 2) return false;
+      for (let i = 0; i < optimalPath.length - 1; i++) {
+        if (
+          (d.source === optimalPath[i] && d.target === optimalPath[i + 1]) ||
+          (d.source === optimalPath[i + 1] && d.target === optimalPath[i])
+        )
+          return true;
+      }
+      return false;
+    };
+
     const svg = d3.select(svgRef.current);
     svg.selectAll("*").remove();
     svg.attr("viewBox", [0, 0, width, height]);
@@ -60,28 +77,8 @@ export function QuantumGraph({
       .selectAll("line")
       .data(links)
       .join("line")
-      .attr("stroke", (d) => {
-        if (!optimalPath || optimalPath.length < 2) return "#475569";
-        for (let i = 0; i < optimalPath.length - 1; i++) {
-          if (
-            (d.source === optimalPath[i] && d.target === optimalPath[i + 1]) ||
-            (d.source === optimalPath[i + 1] && d.target === optimalPath[i])
-          )
-            return "#22d3ee";
-        }
-        return "#475569";
-      })
-      .attr("stroke-width", (d) => {
-        if (!optimalPath || optimalPath.length < 2) return 1.5;
-        for (let i = 0; i < optimalPath.length - 1; i++) {
-          if (
-            (d.source === optimalPath[i] && d.target === optimalPath[i + 1]) ||
-            (d.source === optimalPath[i + 1] && d.target === optimalPath[i])
-          )
-            return 3;
-        }
-        return 1.5;
-      })
+      .attr("stroke", (d) => (isOnPath(d) ? "#22d3ee" : "#475569"))
+      .attr("stroke-width", (d) => (isOnPath(d) ? 3 : 1.5))
       .attr("stroke-opacity", 0.8);
 
     const node = g
@@ -110,12 +107,15 @@ export function QuantumGraph({
           })
       );
 
-    node
+    const circles = node
       .append("circle")
-      .attr("r", 10)
+      .attr("r", animate ? 0 : 10)
       .attr("fill", (d) => (pathSet.has(d.id) ? "#22d3ee" : "#6366f1"))
       .attr("stroke", "#1e293b")
       .attr("stroke-width", 2);
+    if (animate) {
+      circles.transition().duration(500).delay((_, i) => i * 80).attr("r", 10);
+    }
     node
       .append("text")
       .attr("dx", 14)
@@ -147,7 +147,7 @@ export function QuantumGraph({
     return () => {
       simulation.stop();
     };
-  }, [pools, optimalPath, width, height]);
+  }, [pools, optimalPath, width, height, animate]);
 
   if (!pools.length) return null;
   return (

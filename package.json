@@ -1,9 +1,11 @@
 {
   "name": "qhda-monorepo",
   "private": true,
-  "description": "Root for Vercel: real app is in frontend/",
+  "description": "Quantum-Hybrid DEX Accelerator",
+  "workspaces": ["frontend"],
   "scripts": {
     "build": "cd frontend && npm ci && npm run build",
+    "dev": "cd frontend && npm run dev",
     "install": "cd frontend && npm install"
   },
   "devDependencies": {

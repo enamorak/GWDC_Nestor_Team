@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Menu, X, Zap, GitBranch, BarChart3, LayoutDashboard, Home, ChevronDown } from "lucide-react";
+import { Menu, X, Zap, GitBranch, BarChart3, LayoutDashboard, Home, ChevronDown, BookOpen, PiggyBank, Shield, TrendingUp } from "lucide-react";
 
 type IconComponent = React.ComponentType<{ className?: string }>;
 type NavItemLink = { href: string; label: string; icon: IconComponent };
@@ -23,8 +23,12 @@ const navItems: NavItem[] = [
       { href: "/demo/arbitrage", label: "Arbitrage", icon: Zap },
       { href: "/demo/scheduler", label: "Scheduler", icon: GitBranch },
       { href: "/demo/liquidation", label: "Liquidation", icon: BarChart3 },
+      { href: "/demo/yield-scheduler", label: "Yield scheduling", icon: PiggyBank },
+      { href: "/demo/risk-classifier", label: "Risk classifier", icon: Shield },
+      { href: "/demo/prediction-market", label: "Prediction market", icon: TrendingUp },
     ],
   },
+  { href: "/documentation", label: "Documentation", icon: BookOpen },
   { href: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
 ];
 
@@ -172,6 +176,12 @@ export function Navbar() {
                 </Link>
               ))}
             </div>
+            <NavLink
+              href="/documentation"
+              label="Documentation"
+              icon={BookOpen}
+              active={pathname === "/documentation"}
+            />
             <NavLink
               href="/dashboard"
               label="Dashboard"

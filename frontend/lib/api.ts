@@ -32,6 +32,7 @@ export type ArbitrageRequest = {
   pools: { address: string; tokens: string[]; reserves: number[]; fee: number }[];
   max_hops?: number;
   amount_in?: number;
+  use_extended_demo?: boolean;
 };
 
 export type ArbitrageComparison = {
@@ -52,6 +53,7 @@ export type ArbitrageResponse = {
   simulation_time: number;
   classical_baseline?: number;
   comparison?: ArbitrageComparison;
+  quantum_metrics?: { paths_evaluated?: number; max_hops?: number; solver_ms?: number; qubo_approx_vars?: number; annealing_reads?: number };
 };
 
 export async function runArbitrage(body: ArbitrageRequest): Promise<ArbitrageResponse> {
@@ -94,6 +96,7 @@ export type SchedulerResponse = {
   conflict_matrix?: number[][];
   total_conflicts?: number;
   comparison?: SchedulerComparison;
+  quantum_metrics?: { graph_nodes?: number; graph_edges?: number; conflict_pairs?: number; coloring_slots?: number; classical_slots_baseline?: number };
 };
 
 export async function fetchQuantumStatus(): Promise<{
@@ -123,19 +126,24 @@ export type LiquidationPosition = {
   debt: string[];
   health_factor: number;
   liquidation_bonus?: number;
+  gas_estimate?: number;
+  debt_amounts?: Record<string, number>;
 };
 
 export type LiquidationRequest = {
   positions_to_liquidate: LiquidationPosition[];
-  available_liquidity?: Record<string, unknown>;
-  protocol_constraints?: Record<string, unknown>;
+  available_liquidity?: Record<string, number>;
+  protocol_constraints?: { max_gas_per_block?: number };
 };
 
 export type LiquidationComparison = {
   classical_recovery: number;
   classical_selected: string[];
+  classical_gas_used?: number;
+  classical_constraint_violation?: string;
   quantum_recovery: number;
   quantum_selected: string[];
+  quantum_gas_used?: number;
   improvement_pct: number;
   winner: string;
 };
@@ -146,12 +154,122 @@ export type LiquidationResponse = {
   estimated_recovery: number;
   simulation_time: number;
   comparison?: LiquidationComparison;
+  quantum_metrics?: { positions_evaluated?: number; positions_selected?: number; solver_ms?: number; constraints_checked?: string };
 };
 
 export async function runLiquidation(
   body: LiquidationRequest
 ): Promise<LiquidationResponse> {
   const res = await fetch(`${API_BASE}/api/quantum/liquidation`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(body),
+  });
+  if (!res.ok) throw new Error(await res.text());
+  return res.json();
+}
+
+// --- Quantum Vision: Yield Infra & Prediction Market ---
+
+export type YieldTxRef = { tx_id: string; gas_estimate?: number; protocol?: string };
+export type YieldSchedulingRequest = {
+  transactions: YieldTxRef[];
+  gas_limit?: number;
+  gas_per_tx?: number;
+};
+export type YieldSchedulingComparison = {
+  classical_total_gas: number;
+  classical_txs_executed: number;
+  quantum_total_gas: number;
+  quantum_txs_executed: number;
+  gas_savings_pct: number;
+  winner: string;
+};
+export type YieldSchedulingResponse = {
+  recommended_batches: Record<string, string[]>;
+  total_gas_used: number;
+  txs_batched: number;
+  simulation_time: number;
+  comparison?: YieldSchedulingComparison;
+  quantum_metrics?: { qubo_vars?: number; gas_limit?: number; solver_ms?: number; batches?: number };
+};
+
+export async function runYieldScheduling(
+  body: YieldSchedulingRequest
+): Promise<YieldSchedulingResponse> {
+  const res = await fetch(`${API_BASE}/api/quantum/yield-scheduling`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(body),
+  });
+  if (!res.ok) throw new Error(await res.text());
+  return res.json();
+}
+
+export type PoolRiskInput = {
+  pool_id: string;
+  volatility?: number;
+  tvl_usd?: number;
+  concentration?: number;
+  audit_score?: number;
+};
+export type PoolRiskRequest = { pools: PoolRiskInput[] };
+export type PoolRiskComparison = {
+  classical_avg_score: number;
+  quantum_avg_score: number;
+  factors_classical: number;
+  factors_quantum: number;
+  winner: string;
+};
+export type PoolRiskScore = {
+  pool_id: string;
+  classical_score: number;
+  quantum_score: number;
+  risk_band: string;
+};
+export type PoolRiskResponse = {
+  pool_scores: PoolRiskScore[];
+  simulation_time: number;
+  comparison?: PoolRiskComparison;
+  quantum_metrics?: { pools_evaluated?: number; factors_used?: number; solver_ms?: number };
+};
+
+export async function runPoolRisk(
+  body: PoolRiskRequest
+): Promise<PoolRiskResponse> {
+  const res = await fetch(`${API_BASE}/api/quantum/pool-risk`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(body),
+  });
+  if (!res.ok) throw new Error(await res.text());
+  return res.json();
+}
+
+export type PredictionMarketRequest = {
+  outcomes?: string[];
+  liquidity?: number;
+  bet_amount?: number;
+};
+export type PredictionMarketComparison = {
+  classical_slippage_pct: number;
+  quantum_slippage_pct: number;
+  slippage_reduction_pct: number;
+  winner: string;
+};
+export type PredictionMarketResponse = {
+  recommended_curve_params: Record<string, number>;
+  execution_price: number;
+  slippage_pct: number;
+  simulation_time: number;
+  comparison?: PredictionMarketComparison;
+  quantum_metrics?: { outcomes?: number; solver_ms?: number; curve_updates?: number };
+};
+
+export async function runPredictionMarket(
+  body: PredictionMarketRequest
+): Promise<PredictionMarketResponse> {
+  const res = await fetch(`${API_BASE}/api/quantum/prediction-market`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(body),

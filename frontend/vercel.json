@@ -1,5 +1,13 @@
 {
   "framework": "nextjs",
-  "buildCommand": "npm run build",
-  "installCommand": "npm install"
+  "buildCommand": "cd ../ && npm run build || npm run build",
+  "installCommand": "cd ../ && npm install || npm install",
+  "outputDirectory": ".next",
+  "devCommand": "next dev",
+  "rewrites": [
+    {
+      "source": "/api/:path*",
+      "destination": "https://gwdc-nestor-team.onrender.com"
+    }
+  ]
 }

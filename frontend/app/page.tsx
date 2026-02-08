@@ -14,6 +14,9 @@ import {
   Wallet,
   MapPin,
   CheckCircle2,
+  PiggyBank,
+  Shield,
+  TrendingUp,
 } from "lucide-react";
 import { addPharosToWallet } from "@/lib/pharos-chain";
 
@@ -46,15 +49,15 @@ export default function HomePage() {
             className="mx-auto max-w-4xl text-center"
           >
             <p className="mb-4 text-sm font-medium uppercase tracking-widest text-cyan-400">
-              Pharos Network · Research Prototype
+              DEX Order Book & Reorg DEX · Pharos Network
             </p>
             <h1 className="mb-6 text-4xl font-bold tracking-tight sm:text-5xl md:text-6xl">
-              <span className="gradient-text">DeFi, Accelerated by Quantum</span>
+              <span className="gradient-text">High-Frequency DEX, Solved</span>
             </h1>
             <p className="mx-auto max-w-2xl text-lg text-slate-400">
-              A hybrid quantum-classical prototype demonstrating the potential of quantum
-              computing for DEX: arbitrage pathfinding, transaction scheduling, and
-              liquidation optimization.
+              Quantum-hybrid prototype for DEX and Reorg DEX: high-frequency consolidation
+              of thousands of pending orders, parallel conflict optimization, and
+              low-latency liquidation to prevent price-fluctuation risk.
             </p>
             <motion.div
               className="mt-10 flex flex-wrap justify-center gap-4"
@@ -109,25 +112,43 @@ export default function HomePage() {
           <h2 className="mb-12 text-center text-2xl font-semibold text-white">
             Interactive demos
           </h2>
-          <div className="grid gap-8 sm:grid-cols-3">
+          <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
             {[
               {
-                title: "Arbitrage Pathfinder",
-                desc: "Optimal path across liquidity pools using QUBO and simulated annealing. D3.js pool graph.",
+                title: "High-frequency consolidation",
+                desc: "Optimal pathfinding across pools: quantum full path vs classical 2-hop. Up to 6%+ better output on complex graphs.",
                 href: "/demo/arbitrage",
                 icon: Zap,
               },
               {
-                title: "Transaction Scheduler",
-                desc: "Minimize read/write conflicts by scheduling orders into slots. Conflict heatmap.",
+                title: "Parallel conflict optimization",
+                desc: "Graph coloring: quantum batches → up to 82% fewer execution slots than sequential (1 order = 1 slot).",
                 href: "/demo/scheduler",
                 icon: GitBranch,
               },
               {
-                title: "Liquidation Optimizer",
-                desc: "Select optimal positions to liquidate. Simulate market drop and run optimizer.",
+                title: "Low-latency liquidation",
+                desc: "Maximize recovery under gas & liquidity limits. Quantum knapsack-style selection vs classical health-order.",
                 href: "/demo/liquidation",
                 icon: BarChart3,
+              },
+              {
+                title: "Yield scheduling",
+                desc: "Reinvest batching: quantum QUBO scheduling → 20–40% gas savings vs step-by-step execution.",
+                href: "/demo/yield-scheduler",
+                icon: PiggyBank,
+              },
+              {
+                title: "Pool risk classifier",
+                desc: "10+ factors at once (quantum ML) vs 2–3 metrics (classical). More accurate, dynamic risk scores.",
+                href: "/demo/risk-classifier",
+                icon: Shield,
+              },
+              {
+                title: "Prediction market AMM",
+                desc: "Dynamic curve optimization: 15–30% less slippage than fixed LMSR; better liquidity efficiency.",
+                href: "/demo/prediction-market",
+                icon: TrendingUp,
               },
             ].map((item, i) => (
               <motion.div
@@ -203,16 +224,24 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Live Dashboard */}
+      {/* Documentation & Dashboard */}
       <section className="border-t border-white/5 py-12">
         <div className="container mx-auto px-4 text-center">
-          <Link
-            href="/dashboard"
-            className="inline-flex items-center gap-2 rounded-lg bg-slate-800 px-6 py-3 font-medium text-slate-200 hover:bg-slate-700"
-          >
-            <BarChart3 className="h-5 w-5" />
-            Live Dashboard &amp; Metrics
-          </Link>
+          <div className="flex flex-wrap justify-center gap-4">
+            <Link
+              href="/documentation"
+              className="inline-flex items-center gap-2 rounded-lg bg-slate-800 px-6 py-3 font-medium text-slate-200 hover:bg-slate-700"
+            >
+              Documentation &amp; conflict diagrams
+            </Link>
+            <Link
+              href="/dashboard"
+              className="inline-flex items-center gap-2 rounded-lg bg-slate-800 px-6 py-3 font-medium text-slate-200 hover:bg-slate-700"
+            >
+              <BarChart3 className="h-5 w-5" />
+              Live Dashboard &amp; Metrics
+            </Link>
+          </div>
         </div>
       </section>
 

@@ -18,11 +18,25 @@ body {
   min-height: 100vh;
 }
 
+@keyframes heatmap-cell-in {
+  from {
+    opacity: 0;
+    transform: scale(0.6);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
 @layer utilities {
   .text-balance {
     text-wrap: balance;
   }
   .gradient-text {
     @apply bg-clip-text text-transparent bg-gradient-to-r from-indigo-400 via-cyan-400 to-indigo-400 bg-[length:200%_auto] animate-gradient;
+  }
+  .animate-heatmap-cell {
+    animation: heatmap-cell-in 0.4s ease-out forwards;
   }
 }
