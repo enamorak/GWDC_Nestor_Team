@@ -93,11 +93,12 @@ Alternatively, use the `backend/render.yaml` blueprint: in Render dashboard, **N
 
 1. Go to [Vercel](https://vercel.com) → Sign up / Log in (e.g. with GitHub).
 2. **Add New** → **Project** → Import your GitHub repo.
-3. **Root Directory:** set to **`frontend`** (mandatory). Do not leave empty — the repo root has a monorepo layout; building from root can cause OOM. Use default **Install Command** (`npm install`) and **Build Command** (`npm run build`); do not override with `cd ../ && ...`.
+3. **Root Directory:** set to **`frontend`** (recommended). Then use default Install/Build commands.  
+   If you leave Root Directory at repo root, the repo includes a root `vercel.json` that runs install and build inside `frontend`; ensure you do **not** override Install/Build in the dashboard with `cd ../ && ...`.
 4. **Framework Preset:** Next.js (auto-detected).
-5. **Environment Variables:** add:
-   - `NEXT_PUBLIC_API_URL` = your Render backend URL (e.g. `https://qhda-api.onrender.com`)  
-   Without this, the frontend will call `http://localhost:8000` and demos will fail in production.
+5. **Environment Variables:** add (required for demos to work):
+   - `NEXT_PUBLIC_API_URL` = your Render backend URL (e.g. `https://gwdc-nestor-team.onrender.com`)  
+   Without this, all demo actions (Arbitrage, Scheduler, Liquidation, Yield, Risk, Prediction) will call `http://localhost:8000` and fail in production.
 6. **Deploy**. Vercel will build and give you a URL (e.g. `https://qhda-frontend.vercel.app`).
 
 ### 3. After deployment
